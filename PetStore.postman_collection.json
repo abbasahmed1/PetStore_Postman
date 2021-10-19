@@ -391,6 +391,21 @@
 				},
 				{
 					"name": "LogOut",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Logged In',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -458,6 +473,27 @@
 			"item": [
 				{
 					"name": "AddPet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('pet Created',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"pm.test('ID and Status are set',function(){\r",
+									"\r",
+									" const {id} = pm.response.json();\r",
+									"    pm.environment.set('petID',id);\r",
+									"   return 'petID';\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -472,7 +508,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 0,\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"cats\"\n  },\n  \"name\": \"Cat3\",\n  \"photoUrls\": [\n    \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdGlastmve2BGOpG2zRQ9xImHcPiMJf3KwOT14Cux5PEzKgeh3baMjTs2jGnFpo5nuwnA&usqp=CAU\",\n    \"https://cdn.theatlantic.com/thumbor/W544GIT4l3z8SG-FMUoaKpFLaxE=/0x131:2555x1568/1600x900/media/img/mt/2017/06/shutterstock_319985324/original.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"tag1\"\n    }\n  ],\n  \"status\": \"available\"\n}"
+							"raw": "{\n  \"id\": 10169450,\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"cats\"\n  },\n  \"name\": \"Memo\",\n  \"photoUrls\": [\n    \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdGlastmve2BGOpG2zRQ9xImHcPiMJf3KwOT14Cux5PEzKgeh3baMjTs2jGnFpo5nuwnA&usqp=CAU\",\n    \"https://cdn.theatlantic.com/thumbor/W544GIT4l3z8SG-FMUoaKpFLaxE=/0x131:2555x1568/1600x900/media/img/mt/2017/06/shutterstock_319985324/original.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"tag1\"\n    }\n  ],\n  \"status\": \"available\"\n}"
 						},
 						"url": {
 							"raw": "https://petstore.swagger.io/v2/pet",
@@ -492,6 +528,38 @@
 				},
 				{
 					"name": "GetPetID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"GetPetID\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('pet Found',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -501,7 +569,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://petstore.swagger.io/v2/pet/9223372036854775065",
+							"raw": "https://petstore.swagger.io/v2/pet/{{petID}}",
 							"protocol": "https",
 							"host": [
 								"petstore",
@@ -511,7 +579,7 @@
 							"path": [
 								"v2",
 								"pet",
-								"9223372036854775065"
+								"{{petID}}"
 							]
 						}
 					},
@@ -519,6 +587,24 @@
 				},
 				{
 					"name": "GetPetsByStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('pet Created',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"   \r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"101694\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -552,6 +638,20 @@
 				},
 				{
 					"name": "UpdatePet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('pet Created',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -566,7 +666,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 9223372036854775065,\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"farouk\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"available\"\n}"
+							"raw": "{\n  \"id\": {{petID}},\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"Snoopy2\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"available\"\n}"
 						},
 						"url": {
 							"raw": "https://petstore.swagger.io/v2/pet",
@@ -586,6 +686,38 @@
 				},
 				{
 					"name": "UpdateName-StatusPet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"UpdateName-StatusPet\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('pet name is updated',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -603,7 +735,7 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Faroooook",
+									"value": "SnoopuOut",
 									"type": "text"
 								},
 								{
@@ -614,7 +746,7 @@
 							]
 						},
 						"url": {
-							"raw": "https://petstore.swagger.io/v2/pet/9223372036854775065",
+							"raw": "https://petstore.swagger.io/v2/pet/{{petID}}",
 							"protocol": "https",
 							"host": [
 								"petstore",
@@ -624,7 +756,66 @@
 							"path": [
 								"v2",
 								"pet",
-								"9223372036854775065"
+								"{{petID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUpdatedPetID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"GetUpdatedPetID\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('get pet name is updated',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/{{petID}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"{{petID}}"
 							]
 						}
 					},
@@ -632,6 +823,38 @@
 				},
 				{
 					"name": "DeletePetByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"DeletePetByID\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('pet Deleted',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -645,7 +868,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://petstore.swagger.io/v2/pet/9223372036854775065",
+							"raw": "https://petstore.swagger.io/v2/pet/{{petID}}",
 							"protocol": "https",
 							"host": [
 								"petstore",
@@ -655,7 +878,67 @@
 							"path": [
 								"v2",
 								"pet",
-								"9223372036854775065"
+								"{{petID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPetIDAfterDelete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"GetPetIDAfterDelete\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('pet doesnt exist',function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"\r",
+									"    })\r",
+									"    \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/{{petID}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"{{petID}}"
 							]
 						}
 					},
@@ -718,6 +1001,18 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"pm.test('Order is placed',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"\r",
+									"\r",
+									"pm.test('Check Order Status', function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).to.eql(\"placed\");\r",
+									"    pm.environment.set('OrderID',jsonData.id);\r",
+									"   return 'OrderID';\r",
+									"});\r",
 									""
 								],
 								"type": "text/javascript"
@@ -738,7 +1033,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 10169460,\n  \"petId\": 10169450,\n  \"quantity\": 1,\n  \"shipDate\": \"2021-10-15T20:20:56.707Z\",\n  \"status\": \"sold\",\n  \"complete\": true\n}"
+							"raw": "{\n  \"id\": 10169460,\n  \"petId\": 10169450,\n  \"quantity\": 1,\n  \"shipDate\": \"2021-10-15T20:20:56.707Z\",\n  \"status\": \"placed\",\n  \"complete\": true\n}"
 						},
 						"url": {
 							"raw": "https://petstore.swagger.io/v2/store/order",
@@ -759,8 +1054,221 @@
 				},
 				{
 					"name": "GetOrderByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"GetOrderByID\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('Order is Returned',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    pm.test('Check Order Status', function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).to.eql(\"placed\");\r",
+									"\r",
+									"});\r",
+									"    \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/order/{{OrderID}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"order",
+								"{{OrderID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderPetDelivered",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Order is placed',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 10169460,\n  \"petId\": 10169450,\n  \"quantity\": 1,\n  \"shipDate\": \"2021-10-15T20:20:56.707Z\",\n  \"status\": \"delivered\",\n  \"complete\": true\n}"
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/order",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrderByIDDelivered",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"GetOrderByIDDelivered\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('Order is Returned',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    pm.test('Check Order Status', function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).to.eql(\"delivered\");\r",
+									"\r",
+									"});\r",
+									"    \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/order/{{OrderID}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"order",
+								"{{OrderID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteOrder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"DeleteOrder\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('Order is Deleted',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    pm.test('Check Order Status', function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"10169460\");\r",
+									"\r",
+									"});\r",
+									"    \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "accept",
@@ -786,9 +1294,45 @@
 					"response": []
 				},
 				{
-					"name": "DeleteOrder",
+					"name": "GetOrderByIDCheck",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"GetOrderByIDCheck\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('Order is Returned',function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"\r",
+									"    })\r",
+									"    pm.test('Check Order Status', function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Order not found\");\r",
+									"\r",
+									"});\r",
+									"    \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
-						"method": "DELETE",
+						"method": "GET",
 						"header": [
 							{
 								"key": "accept",
@@ -796,7 +1340,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://petstore.swagger.io/v2/store/order/9223372036854775807",
+							"raw": "https://petstore.swagger.io/v2/store/order/{{OrderID}}",
 							"protocol": "https",
 							"host": [
 								"petstore",
@@ -807,7 +1351,7 @@
 								"v2",
 								"store",
 								"order",
-								"9223372036854775807"
+								"{{OrderID}}"
 							]
 						}
 					},
