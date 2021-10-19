@@ -54,9 +54,23 @@
 							"raw": "{\n  \"id\": 0,\n  \"username\": \"{{user}}\",\n  \"firstName\": \"{{fname}}\",\n  \"lastName\": \"PMTest\",\n  \"email\": \"Test_PostMan@gmail.com\",\n  \"password\": \"TestPostman123@\",\n  \"phone\": \"01001428212\",\n  \"userStatus\": 0\n}"
 						},
 						"url": {
-							"raw": "{{base}}user",
+							"raw": "https://petstore.swagger.io/v2/user",
+							"protocol": "https",
 							"host": [
-								"{{base}}user"
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
 							]
 						}
 					},
