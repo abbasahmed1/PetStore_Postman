@@ -8,6 +8,13 @@ jobs:
       - checkout
       - newman/newman-run:
           collection: ./PetsScenario.postman_collection.json
+jobs:
+  build:
+    executor: newman/postman-newman-docker
+    steps:
+      - checkout
+      - newman/newman-run:
+          collection: ./PetStore.postman_collection.json
 
 workflows:
   example-workflow:
