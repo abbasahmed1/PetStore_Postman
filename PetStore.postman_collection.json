@@ -1,0 +1,819 @@
+{
+	"info": {
+		"_postman_id": "d73cb50b-d9d6-4962-b2cb-91433736ccf8",
+		"name": "PetStore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "UsersScenario",
+			"item": [
+				{
+					"name": "CreateUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let date = Date.now();\r",
+									"let users = 'Test' + date;\r",
+									"let Firstname = 'Tester' + date;\r",
+									"pm.environment.set('user',users);\r",
+									"pm.environment.set('fname' ,Firstname);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('user Created',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 0,\n  \"username\": \"{{user}}\",\n  \"firstName\": \"{{fname}}\",\n  \"lastName\": \"PMTest\",\n  \"email\": \"Test_PostMan@gmail.com\",\n  \"password\": \"TestPostman123@\",\n  \"phone\": \"01001428212\",\n  \"userStatus\": 0\n}"
+						},
+						"url": {
+							"raw": "{{base}}user",
+							"host": [
+								"{{base}}user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Logged In',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/login?username={{user}}&password=TestPostman123@",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{user}}"
+								},
+								{
+									"key": "password",
+									"value": "TestPostman123@"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let date = Date.now();\r",
+									"let user22 = 'Test' + date;\r",
+									"pm.environment.set('user2',user22);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('User Upadted',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 0,\n  \"username\": \"{{user2}}\",\n  \"firstName\": \"TestUpdate\",\n  \"lastName\": \"UpdatedPM\",\n  \"email\": \"TestPM@yahoo.com\",\n  \"password\": \"TestPM123@\",\n  \"phone\": \"01001428212\",\n  \"userStatus\": 0\n}"
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/{{user}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"{{user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"GetUser\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    \r",
+									"}\r",
+									"\r",
+									"pm.test('Assign the user in the request to UserU',function(){\r",
+									"\r",
+									" const {username} = pm.response.json();\r",
+									"    pm.environment.set('userU',username);\r",
+									"   return 'userU';\r",
+									"})\r",
+									"\r",
+									"\r",
+									"//pm.test('user Created',function(){\r",
+									"  /* if(pm.response.to.have.status(404)){\r",
+									"pm.test('user Created',function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Created\");\r",
+									"});\r",
+									"    })\r",
+									"     \r",
+									"    }\r",
+									"    else {\r",
+									"        pm.response.to.have.status(200)\r",
+									"    */\r",
+									"   // while(pm.response.to.have.status(404)){\r",
+									"   /* pm.test('user Created',function(){\r",
+									"\r",
+									"\r",
+									"    })\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"\r",
+									"//pm.test('the user is here' , function(){\r",
+									"    const {username} = pm.response.json();\r",
+									"    pm.environment.set('userU',username);\r",
+									"   // return 'userU';\r",
+									"//})\r",
+									"\r",
+									"\r",
+									"pm.test('check Get',function(){\r",
+									" pm.response.to.have.status(404)\r",
+									"})\r",
+									"\r",
+									"pm.test('check 2',function(){\r",
+									"\r",
+									" const {username} = pm.response.json();\r",
+									"    pm.environment.set('userU',username);\r",
+									"   return 'userU';\r",
+									"})\r",
+									" \r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     //pm.response.to.be.ok;\r",
+									"   //  pm.response.to.be.withBody;\r",
+									"     //pm.response.to.be.json;\r",
+									"     pm.response.to.have.status(404)\r",
+									"     var body = JSON.parse(responseBody);\r",
+									"\r",
+									"if (body.type === \"error\" && body.results.length !== 0){\r",
+									"  postman.setNextRequest(\"GetUser\");\r",
+									"} else {\r",
+									"  postman.setNextRequest(\"DeleteUser\"); \r",
+									"  you can also try postman.setNextRequest(null);  \r",
+									"}\r",
+									"   \r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test('check 2',function(){\r",
+									"    const {username} = pm.response.json();\r",
+									"    pm.environment.set('userU',username);\r",
+									"   return 'userU';\r",
+									"})*/\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/{{user2}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"{{user2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count2 = pm.environment.get(\"count2\");\r",
+									"\r",
+									"if(!count2){\r",
+									"count2 = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(count2<2){\r",
+									"    count2 = count2 + 1;\r",
+									"    pm.environment.set(\"count2\",count2);\r",
+									"    postman.setNextRequest(\"DeleteUser\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count2\");\r",
+									"    pm.test('The User Is Deleted',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    })\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/{{userU}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"{{userU}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogOut",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/logout",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreatListOfUSers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"id\": 1,\n    \"username\": \"PetShop1\",\n    \"firstName\": \"User1\",\n    \"lastName\": \"userPet1\",\n    \"email\": \"petshop1@gmail.com\",\n    \"password\": \"petshop1\",\n    \"phone\": \"1234\",\n    \"userStatus\": 0\n  },\n   {\n    \"id\": 2,\n    \"username\": \"PetShop2\",\n    \"firstName\": \"User2\",\n    \"lastName\": \"userPet2\",\n    \"email\": \"petshop2@gmail.com\",\n    \"password\": \"petshop2\",\n    \"phone\": \"01001428211\",\n    \"userStatus\": 0\n  }\n]"
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/createWithList",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"createWithList"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PetsScenario",
+			"item": [
+				{
+					"name": "AddPet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 0,\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"cats\"\n  },\n  \"name\": \"Cat3\",\n  \"photoUrls\": [\n    \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdGlastmve2BGOpG2zRQ9xImHcPiMJf3KwOT14Cux5PEzKgeh3baMjTs2jGnFpo5nuwnA&usqp=CAU\",\n    \"https://cdn.theatlantic.com/thumbor/W544GIT4l3z8SG-FMUoaKpFLaxE=/0x131:2555x1568/1600x900/media/img/mt/2017/06/shutterstock_319985324/original.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"tag1\"\n    }\n  ],\n  \"status\": \"available\"\n}"
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPetID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/9223372036854775065",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"9223372036854775065"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPetsByStatus",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/findByStatus?status=available",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"findByStatus"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "available"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdatePet",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 9223372036854775065,\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"farouk\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"available\"\n}"
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateName-StatusPet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Faroooook",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "sold",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/9223372036854775065",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"9223372036854775065"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletePetByID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "api_key",
+								"value": "special-key"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/9223372036854775065",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"9223372036854775065"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "StoreScenario",
+			"item": [
+				{
+					"name": "Inventory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('inventory is working',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"   \r",
+									"pm.test(\"values in the inventory\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/inventory",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"inventory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderPet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 10169460,\n  \"petId\": 10169450,\n  \"quantity\": 1,\n  \"shipDate\": \"2021-10-15T20:20:56.707Z\",\n  \"status\": \"sold\",\n  \"complete\": true\n}"
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/order",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrderByID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/order/10169460",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"order",
+								"10169460"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteOrder",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/order/9223372036854775807",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"order",
+								"9223372036854775807"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

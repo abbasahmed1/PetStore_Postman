@@ -1,0 +1,487 @@
+{
+	"info": {
+		"_postman_id": "8ae82b4f-46c8-47e9-b45d-e9a695d38c61",
+		"name": "PetsScenario",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PetsScenario",
+			"item": [
+				{
+					"name": "AddPet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('pet Created',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"pm.test('ID and Status are set',function(){\r",
+									"\r",
+									" const {id} = pm.response.json();\r",
+									"    pm.environment.set('petID',id);\r",
+									"   return 'petID';\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 10169450,\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"cats\"\n  },\n  \"name\": \"Memo\",\n  \"photoUrls\": [\n    \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdGlastmve2BGOpG2zRQ9xImHcPiMJf3KwOT14Cux5PEzKgeh3baMjTs2jGnFpo5nuwnA&usqp=CAU\",\n    \"https://cdn.theatlantic.com/thumbor/W544GIT4l3z8SG-FMUoaKpFLaxE=/0x131:2555x1568/1600x900/media/img/mt/2017/06/shutterstock_319985324/original.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"tag1\"\n    }\n  ],\n  \"status\": \"available\"\n}"
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPetID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"GetPetID\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('pet Found',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/{{petID}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"{{petID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPetsByStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('pet Created',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"   \r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"101694\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/findByStatus?status=available",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"findByStatus"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "available"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdatePet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('pet Created',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": {{petID}},\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\"\n  },\n  \"name\": \"Snoopy2\",\n  \"photoUrls\": [\n    \"string\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\"\n    }\n  ],\n  \"status\": \"available\"\n}"
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateName-StatusPet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"UpdateName-StatusPet\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('pet name is updated',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "SnoopuOut",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "sold",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/{{petID}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"{{petID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUpdatedPetID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"GetUpdatedPetID\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('get pet name is updated',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/{{petID}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"{{petID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletePetByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"DeletePetByID\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('pet Deleted',function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    })\r",
+									"    \r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "api_key",
+								"value": "special-key"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/{{petID}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"{{petID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPetIDAfterDelete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let count = pm.environment.get(\"count\");\r",
+									"\r",
+									"if(!count){\r",
+									"count = 1 ;\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(count<2){\r",
+									"    count = count + 1;\r",
+									"    pm.environment.set(\"count\",count);\r",
+									"    postman.setNextRequest(\"GetPetIDAfterDelete\");\r",
+									"}\r",
+									"else\r",
+									"{\r",
+									"    pm.environment.unset(\"count\");\r",
+									"    pm.test('pet doesnt exist',function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"\r",
+									"    })\r",
+									"    \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/{{petID}}",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"{{petID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
